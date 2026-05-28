@@ -584,10 +584,10 @@ start_gateway() {
     echo "[run] Starting Hermes gateway..."
     mkdir -p "$HERMES_HOME/logs"
     cd "$HERMES_HOME"
-    hermes -p default gateway run 2>&1 | tee -a "$HERMES_HOME/logs/gateway.log" &
+    HERMES_GATEWAY_NO_SUPERVISE=1 hermes gateway run 2>&1 | tee -a "$HERMES_HOME/logs/gateway.log" &
     TEE_PID=$!
     sleep 0.5  # let gateway fork
-    GATEWAY_PID=$(pgrep -f "hermes -p default gateway run" | sort -n | tail -1 || echo "$TEE_PID")
+    GATEWAY_PID=$(pgrep -f "hermes gateway run" | sort -n | tail -1 || echo "$TEE_PID")
     echo "[run] Gateway started (PID: $GATEWAY_PID, tee: $TEE_PID)"
 }
 
